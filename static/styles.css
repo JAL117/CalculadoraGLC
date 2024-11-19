@@ -1,0 +1,228 @@
+:root {
+    /* Modo claro por defecto */
+    --primary-color: #6366f1;
+    --secondary-color: #4f46e5;
+    --background-color: #f9fafb;
+    --surface-color: #ffffff;
+    --text-color: #1f2937;
+    --button-text: #ffffff;
+    --operator-color: #4f46e5;
+    --number-color: #6366f1;
+    --special-color: #9333ea;
+    --border-color: #e5e7eb;
+    --display-bg: #ffffff;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Modo oscuro - se activa con clase o preferencia del sistema */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: #818cf8;
+        --secondary-color: #6366f1;
+        --background-color: #111827;
+        --surface-color: #1f2937;
+        --text-color: #f9fafb;
+        --button-text: #ffffff;
+        --operator-color: #6366f1;
+        --number-color: #4f46e5;
+        --special-color: #a855f7;
+        --border-color: #374151;
+        --display-bg: #111827;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Clase para forzar modo oscuro independiente de la preferencia del sistema */
+.dark-theme {
+    --primary-color: #818cf8;
+    --secondary-color: #6366f1;
+    --background-color: #111827;
+    --surface-color: #1f2937;
+    --text-color: #f9fafb;
+    --button-text: #ffffff;
+    --operator-color: #6366f1;
+    --number-color: #4f46e5;
+    --special-color: #a855f7;
+    --border-color: #374151;
+    --display-bg: #111827;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+body {
+    margin: 0;
+    padding: 2rem;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.main-container {
+    display: flex;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.calculator {
+    background-color: var(--surface-color);
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    width: 500px;
+    height: 500px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#display {
+    width: 100%;
+    height: 60px;
+    font-size: 1.5rem;
+    text-align: right;
+    margin-bottom: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 0rem;
+    background-color: var(--display-bg);
+    color: var(--text-color);
+    font-family: 'Monaco', monospace;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+button {
+    padding: 1rem;
+    font-size: 1.25rem;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Botones de números */
+button:nth-child(n):not(:nth-child(4n)):not([onclick*="("]):not([onclick*=")"]):not([onclick*="clear"]):not([onclick*="compute"]):not([onclick*="showTree"]) {
+    background-color: var(--number-color);
+    color: var(--button-text);
+}
+
+/* Botones de operadores */
+button:nth-child(4n):not(:last-child) {
+    background-color: var(--operator-color);
+    color: var(--button-text);
+}
+
+/* Botones especiales */
+button[onclick*="("], 
+button[onclick*=")"], 
+button[onclick*="clear"], 
+button[onclick*="compute"], 
+button[onclick*="showTree"] {
+    background-color: var(--special-color);
+    color: var(--button-text);
+}
+
+/* Efectos de hover y active */
+button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Efecto de ripple al hacer click */
+button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+button:active::after {
+    width: 200%;
+    height: 200%;
+}
+
+.tree-display {
+    background-color: var(--surface-color);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    flex-grow: 1;
+    transition: background-color 3s ease, box-shadow 0.3s ease;
+}
+
+.tree-display h2 {
+    margin-top: 0;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+svg {
+    border: 2px solid var(--border-color);
+    border-radius: 0.75rem;
+    background-color: var(--display-bg);
+    width: 100%;
+    height: 600px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Toggle de tema */
+.theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .calculator, 
+    .tree-display {
+        width: 100%;
+    }
+
+    body {
+        padding: 1rem;
+    }
+}
+
+/* Animaciones suaves para cambios de tema */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
